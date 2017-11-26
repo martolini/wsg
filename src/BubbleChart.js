@@ -61,8 +61,8 @@ class BubbleChart extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if(nextProps.selectedShowRatings.length === 0) return false;
-    const currentTitle = (this.props.value) ? this.props.value.title : ''
-    if(currentTitle === nextProps.value.title && (this.props.range[0] === nextProps.range[0] && this.props.range[1] === nextProps.range[1])) return false;
+    const currentID = (this.props.value) ? this.props.value.id : ''
+    if(currentID === nextProps.value.id && (this.props.range[0] === nextProps.range[0] && this.props.range[1] === nextProps.range[1])) return false;
     return true
   }
 

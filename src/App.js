@@ -25,6 +25,7 @@ class App extends Component {
       selectedShowRatings: undefined,
       loading: false,
       selectedEpisode: {},
+      popularShows: []
     };
   }
 
@@ -36,6 +37,16 @@ class App extends Component {
         this.getDetails({ value: sid });
       }
     }
+    this.findMostPopularShows()
+  }
+
+  findMostPopularShows = () => {
+    const showLimit = 3
+    return axios
+      .get(`http://wsgapi.msroed.io/popular?limit=${showLimit}`)
+      .then(response => {
+        this.setState({popularShows: response.data})
+      })
   }
 
   getOptions = input => {
@@ -66,16 +77,18 @@ class App extends Component {
   getDetails = ({ value }) => {
     this.setState({ loading: true });
     axios.get(`http://wsgapi.msroed.io/get/${value}`).then(response => {
+      const show = response.data
       mixpanel.track('Watched show', {
-        title: response.data.Title,
+        title: show.Title,
         imdbID: value,
       });
       this.setState({
-        selectedShowRatings: response.data.episodes,
+        selectedShowRatings: show.episodes,
         value: {
-          title: response.data.Title,
-          posterURL: response.data.Poster,
-          seasons: response.data.totalSeasons,
+          id: show.imdbID,
+          title: show.Title,
+          posterURL: show.Poster,
+          seasons: show.totalSeasons,
         },
         loading: false,
       });
@@ -122,8 +135,8 @@ class App extends Component {
 
   render() {
     const selectedShowRatings = this.showRatingsfilteredByRange();
-    const { modalOpen, range, value, loading, selectedEpisode } = this.state;
-    let bubbleStyle = {minHeight: 1200, maxWidth: 1200}
+    const { modalOpen, range, value, loading, selectedEpisode, popularShows } = this.state;
+    let bubbleStyle = {}
     if (value) {
       const maxEpisode = selectedShowRatings.reduce((acc, curr) => curr.episode > acc ? curr.episode : acc, 0)
       bubbleStyle = {height: Math.max(400, 100 + (30 * maxEpisode)), maxWidth: Math.max(400, 50 + (40 * value.seasons))}
@@ -170,6 +183,15 @@ class App extends Component {
             didPressElementAtIndex={this.showModal}
           />
         </div>
+        { popularShows.length > 0 && 
+          <div>
+            <h3>Most popular shows:</h3>
+            <div className='row'>
+              <div className='col-sm-3'/>
+              { popularShows.map((show, i) => <ShowView setSelectedShow={this.setValue} key={show.imdb_id} {...show} />)}
+            </div>
+          </div>
+        }
         <footer className="footer">
           <p>
             Using the{' '}
@@ -192,5 +214,17 @@ class App extends Component {
     );
   }
 }
+
+const ShowView = ({title, imdb_rating, imdb_id, setSelectedShow, poster_url}) => (
+  <div className='col-sm-2' onClick={() => {setSelectedShow({value: imdb_id})}}>
+    <div className='card'>
+      <img className='card-img-top' height='100' width='auto' src={poster_url} alt='' style={{objectFit: 'cover', objectPosition: 'top'}}/>
+      <div className='card-body'>
+        <h4 className='card-title'>{title}</h4> 
+        <i className='fa fa-star fa-lg' style={{color: '#f7c61f'}} aria-hidden='true'></i><span className='lead'> {imdb_rating}</span>
+      </div>
+    </div>
+  </div>
+)
 
 export default App;
