@@ -1,0 +1,23 @@
+language: node_js
+
+# test on two node.js versions: 0.6 and 0.8
+node_js:
+  - 0.8
+
+before_deploy:
+  - yarn build
+
+cache: yarn
+
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+
+script:
+  - yarn test
+
+
+deploy:
+  provider: surge
+  project: ./build/
+  domain: wsg.msroed.io
+  skip_cleanup: true
