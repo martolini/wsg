@@ -14,6 +14,7 @@ const MostPopularShows = ({popularShows, setSelectedShow}) => (
 const ShowView = ({title, imdb_rating, imdb_id, setSelectedShow, poster_url}) => (
   <div className='col-sm-2' onClick={() => {
     setSelectedShow({value: imdb_id});
+    window.scrollTo(0, 0);
     mixpanel.track('Clicked on most popular', {
       title
     });
