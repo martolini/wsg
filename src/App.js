@@ -16,7 +16,7 @@ const Range = createSliderWithTooltip(Slider.Range);
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {searchText: "", imdbID: '', range: [0,10], selectedShowRatings: undefined, loading: false, selectedEpisode: {}}
+    this.state = {searchText: "", imdbID: '', range: [5,10], selectedShowRatings: undefined, loading: false, selectedEpisode: {}}
   }
 
   componentDidMount() {
@@ -107,6 +107,7 @@ class App extends Component {
           <h4>Based on IMDB ratings</h4>
         </header>
         <div className="select-field">
+          <span className="small">Search any show:</span>
           <Select.Async
             placeholder="Select a show.."
             name="form-field-name"
@@ -122,12 +123,13 @@ class App extends Component {
           <Range 
             min={0} 
             max={10} 
-            defaultValue={[0, 10]} 
+            defaultValue={[5, 10]} 
             step={0.5} 
             onChange={this.setRange} 
             tipFormatter={value => `${value}`} />
         </div>
-        <p>Showing results with score between {range[0]} and {range[1]}</p>
+        <p>Showing results with score between {range[0]} and {range[1]}. </p>
+        <p>Click on an episode to view details.</p>
         <div className="content">
           <BubbleChart 
             selectedShowRatings={selectedShowRatings} 

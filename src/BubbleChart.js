@@ -46,7 +46,9 @@ const chartOptions = {
   layout: {
     padding: {
       top: 50,
-      bottom: 50
+      bottom: 50,
+      left: 15,
+      right: 15
     }
   },
   legend: {
