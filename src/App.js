@@ -75,6 +75,7 @@ class App extends Component {
         value: {
           title: response.data.Title,
           posterURL: response.data.Poster,
+          seasons: response.data.totalSeasons,
         },
         loading: false,
       });
@@ -122,6 +123,13 @@ class App extends Component {
   render() {
     const selectedShowRatings = this.showRatingsfilteredByRange();
     const { modalOpen, range, value, loading, selectedEpisode } = this.state;
+    let bubbleStyle = {minHeight: 1200, maxWidth: 1200}
+    if (value) {
+      const maxEpisode = selectedShowRatings.reduce((acc, curr) => curr.episode > acc ? curr.episode : acc, 0)
+      bubbleStyle = {height: Math.max(400, 100 + (30 * maxEpisode)), maxWidth: Math.max(400, 50 + (40 * value.seasons))}
+      console.log(100 + 30 * maxEpisode)
+      console.log(50 + 40 * value.seasons)
+    }
     return (
       <div className="App">
         <header className="App-header">
@@ -155,7 +163,7 @@ class App extends Component {
           Showing results with score between {range[0]} and {range[1]}.{' '}
         </p>
         {value && <p>Click on an episode to view details.</p>}
-        <div className="content">
+        <div style={bubbleStyle} className="content">
           <BubbleChart
             selectedShowRatings={selectedShowRatings}
             range={range}
