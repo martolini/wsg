@@ -127,8 +127,6 @@ class App extends Component {
     if (value) {
       const maxEpisode = selectedShowRatings.reduce((acc, curr) => curr.episode > acc ? curr.episode : acc, 0)
       bubbleStyle = {height: Math.max(400, 100 + (30 * maxEpisode)), maxWidth: Math.max(400, 50 + (40 * value.seasons))}
-      console.log(100 + 30 * maxEpisode)
-      console.log(50 + 40 * value.seasons)
     }
     return (
       <div className="App">
