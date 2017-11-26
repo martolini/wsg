@@ -122,11 +122,13 @@ class App extends Component {
   };
 
   showRatingsfilteredByRange = () => {
+    const fromRange = this.state.range[0]
+    const toRange = this.state.range[1]
     return (this.state.selectedShowRatings || []).filter(
-      show =>
-        show.imdbRating > this.state.range[0] &&
-        show.imdbRating <= this.state.range[1]
-    );
+      show => {
+        if (fromRange === 0) return true
+        return show.imdbRating > fromRange && show.imdbRating <= toRange 
+    });
   };
 
   toggleModal = () => {

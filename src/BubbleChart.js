@@ -80,7 +80,13 @@ class BubbleChart extends Component {
     const chartData = {
       datasets: [{
         label: this.props.value.title,
-        data: selectedShowRatings.map(show => ({x: show.season, y: show.episode, r: scale(show.imdbRating), rating: show.imdbRating, title: show.Title, imdbID: show.imdbID})),
+        data: selectedShowRatings.map(show => ({
+          x: show.season, 
+          y: show.episode, 
+          r: (show.imdbRating === null) ? 1 : scale(show.imdbRating), 
+          rating: (show.imdbRating === null) ? 'N/A' : show.imdbRating, 
+          title: show.Title, 
+          imdbID: show.imdbID})),
         backgroundColor: selectedShowRatings.map(show => `rgba(255,99,132,${scaleColor(show.imdbRating)})`),
         hoverBackgroundColor: '#FF6384',
       }]
