@@ -93,7 +93,6 @@ class App extends Component {
   };
 
   setRange = value => {
-    mixpanel.track('Changing range');
     this.setState({ range: value });
   };
 
