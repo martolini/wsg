@@ -61,13 +61,13 @@ class App extends Component {
       });
   };
 
-  getDetails = ({ value, label }) => {
-    mixpanel.track('Watched show', {
-      title: label,
-      imdbID: value,
-    });
+  getDetails = ({ value }) => {
     this.setState({ loading: true });
     axios.get(`http://wsgapi.msroed.io/get/${value}`).then(response => {
+      mixpanel.track('Watched show', {
+        title: response.data.Title,
+        imdbID: value,
+      });
       this.setState({
         selectedShowRatings: response.data.episodes,
         value: {
