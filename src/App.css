@@ -111,3 +111,9 @@
   background-color: #effbff;
   cursor: pointer;
 }
+
+@media (max-width: 600px) {
+  .card {
+    margin: 5px 20px;
+  }
+}
