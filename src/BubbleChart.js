@@ -86,13 +86,13 @@ class BubbleChart extends Component {
       }]
     };
     return (
-      <RC2 ref={ref => this.chartRef = ref} data={chartData} type='bubble' options={chartOptions} onClick={(e) => {
-        const activeelems = this.chartRef.chart.getElementsAtEvent(e)
-        if (activeelems.length === 0) {
-          return
-        }
-        this.props.didPressElementAtIndex(activeelems[0]._index)
-      }}/>
+        <RC2 ref={ref => this.chartRef = ref} data={chartData} type='bubble' options={chartOptions} onClick={(e) => {
+          const activeelems = this.chartRef.chart.getElementsAtEvent(e)
+          if (activeelems.length === 0) {
+            return
+          }
+          this.props.didPressElementAtIndex(activeelems[0]._index)
+        }}/>
       )
 
   }

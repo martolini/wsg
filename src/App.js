@@ -153,7 +153,9 @@ class App extends Component {
         <p>
           Showing results with score between {range[0]} and {range[1]}.{' '}
         </p>
-        <p>Click on an episode to view details.</p>
+        { value &&
+          <p>Click on an episode to view details.</p>
+        }
         <div className="content">
           <BubbleChart
             selectedShowRatings={selectedShowRatings}
