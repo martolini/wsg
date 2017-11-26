@@ -20,7 +20,8 @@ class OptionComponent extends Component {
 
   render() {
     return (
-      <div onMouseDown={this.handleMouseDown}
+      <div 
+        onMouseDown={this.handleMouseDown}
         onMouseEnter={this.handleMouseEnter}
         onMouseMove={this.handleMouseMove}
         className={this.props.className}

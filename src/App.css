@@ -98,3 +98,13 @@
   padding-top: 20px;
   max-width: 80%;
 }
+
+.borderless td, .borderless th {
+    border: none;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.borderless {
+  width: 35%;
+}
