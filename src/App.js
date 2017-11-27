@@ -88,6 +88,10 @@ class App extends Component {
   getDetails = ({ value }) => {
     this.setState({ loading: true });
     axios.get(`http://wsgapi.msroed.io/get/${value}`).then(response => {
+      if (response.data.Response === 'False') {
+        history.push('/')
+        return;
+      }
       const show = response.data
       mixpanel.track('Watched show', {
         title: show.Title,
