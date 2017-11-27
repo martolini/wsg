@@ -36,9 +36,9 @@ class App extends Component {
       const sid = url.searchParams.get('sid');
       if (sid) {
         this.getDetails({ value: sid });
+      } else {
+        mixpanel.track('Entered start page');
       }
-    } else {
-      mixpanel.track('Entered start page');
     }
     this.findMostPopularShows()
   }
