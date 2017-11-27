@@ -121,12 +121,15 @@ class App extends Component {
   };
 
   showModal = selectedIndex => {
-    mixpanel.track('Clicked episode');
     this.setState({ modalOpen: true });
     const showRatings = this.showRatingsfilteredByRange();
     const imdbID = showRatings[selectedIndex].imdbID;
     this.setState({ loading: true });
     return axios.get(`http://wsgapi.msroed.io/get/${imdbID}`).then(response => {
+      mixpanel.track('Clicked episode', {
+        title: response.data.Title,
+        show: this.state.value.title
+      });
       this.setState({ selectedEpisode: response.data, loading: false });
     });
   };
