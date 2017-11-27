@@ -6,7 +6,7 @@ cache: yarn
 before_deploy:
 - yarn build
 deploy:
-  provider: surge
-  project: ./build
-  domain: wsg.msroed.io
+  provider: firebase
+  token:
+    secure: foKVUp94y2s5ekmUiHxFjjTDneUvcMD6Pvgo8WwQrdx4wZ6Bq9qH8oTwhAhuGtVpU+IKKSd2J/nIwhMY4vzH5Pbf5XolJeeGrwGOcEElzuvR9CRIA1t1x0SV0sHTqqPgxLoMedwcQxAFF3Lpfz/T2nqeb3nHF6o2WgGhcq7uNk3Y5R5NSu4b0Fvcq59j0vk7x5goYcVaSImaWGcs8PZL92yoKUwjhOaXhWL4Jq2JeWfMJHoUDvPHTUNMLZmlPJNiQ/iF3bCSTW8zVHiEGlymz1VD+87uyFGa1bpdc0B+0UWu2VhVzgHcxdnu3to6OvkDNFiKv5jRUrzUNajwyfAaq52TM77cmkQJ1C9WJR8Uv0OZ6yHtGZdQviBAhGfUbYsW9My1rN/60rcPuuSgSx23refXfLT/R5O6IIV+b8Si3WebJS/4K0zyTB9bMMOCO5QHa3+4sg9OUZ1WzVB6rIJ7G/tG3M+ckupvfNA29qS/bgQvTRyHAjG6Yd19GWIaNXDH4J9CDzcJdFhHAmvgeTlIT5FguODKMgEPPe5FT7j9kDEmD4nXh5/O7KNH4DmxBMpYG1q54ib7RgfHwTh2+Y+HlP1kdAJXXiki/iQUAijQ/g9Uv45/qkdcAWGqgJomKtCFaVtfB9v9x7nJ+0cqD6pKZsPU/f/iA11E9hESuE3lixo=
   skip_cleanup: true
