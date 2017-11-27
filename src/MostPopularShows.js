@@ -19,10 +19,10 @@ const ShowView = ({title, imdb_rating, imdb_id, setSelectedShow, poster_url}) =>
       title
     });
   }}>
-    <div className='card'>
+    <div className='card border-dark'>
       <img className='card-img-top' height='100' width='auto' src={poster_url} alt='' style={{objectFit: 'cover', objectPosition: 'top'}}/>
       <div className='card-body'>
-        <h4 className='card-title'>{title}</h4> 
+        <h5 className='card-title'>{title}</h5> 
         <i className='fa fa-star fa-lg' style={{color: '#f7c61f'}} aria-hidden='true' />
         <span className='lead'> {imdb_rating}</span>
       </div>
