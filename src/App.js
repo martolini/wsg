@@ -18,7 +18,7 @@ const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 
 const mixpanel = window.mixpanel;
-
+const baseUrlApi = 'https://wsgapi.msroed.io'
 class App extends Component {
   constructor(props) {
     super(props);
@@ -54,7 +54,7 @@ class App extends Component {
   findMostPopularShows = () => {
     const showLimit = 3
     return axios
-      .get(`http://wsgapi.msroed.io/popular?limit=${showLimit}`)
+      .get(`${baseUrlApi}/popular?limit=${showLimit}`)
       .then(response => {
         this.setState({popularShows: response.data})
       })
@@ -66,7 +66,7 @@ class App extends Component {
     }
     this.setState({ loading: true });
     return axios
-      .get(`http://wsgapi.msroed.io/search`, {
+      .get(`${baseUrlApi}/search`, {
         params: {
           s: input,
           type: 'series',
@@ -87,7 +87,7 @@ class App extends Component {
 
   getDetails = ({ value }) => {
     this.setState({ loading: true });
-    axios.get(`http://wsgapi.msroed.io/get/${value}`).then(response => {
+    axios.get(`${baseUrlApi}/get/${value}`).then(response => {
       if (response.data.Response === 'False') {
         history.push('/')
         return;
@@ -125,7 +125,7 @@ class App extends Component {
     const showRatings = this.showRatingsfilteredByRange();
     const imdbID = showRatings[selectedIndex].imdbID;
     this.setState({ loading: true });
-    return axios.get(`http://wsgapi.msroed.io/get/${imdbID}`).then(response => {
+    return axios.get(`${baseUrlApi}/get/${imdbID}`).then(response => {
       mixpanel.track('Clicked episode', {
         title: response.data.Title,
         show: this.state.value.title
