@@ -11,6 +11,9 @@ import { ValueComponent, OptionComponent } from './MenuComponents';
 import BubbleChart from './BubbleChart';
 import EpisodeModal from './EpisodeModal';
 import MostPopularShows from './MostPopularShows';
+import queryString from 'query-string';
+import createHistory from 'history/createBrowserHistory';
+const history = createHistory()
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 
@@ -31,16 +34,21 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const url = new URL(window.location.href);
-    if (url.searchParams) {
-      const sid = url.searchParams.get('sid');
-      if (sid) {
-        this.getDetails({ value: sid });
-      } else {
-        mixpanel.track('Entered start page');
-      }
+    const url = history.location
+    const queryParams = queryString.parse(url.search)
+    if (queryParams.sid) {
+      this.getDetails({ value: queryParams.sid });
+    } else {
+      mixpanel.track('Entered start page');
     }
     this.findMostPopularShows()
+    
+    history.listen((location, action) => {
+      const query = queryString.parse(location.search)
+      if (query.sid) {
+        this.getDetails({value: query.sid});
+      }
+    })
   }
 
   findMostPopularShows = () => {
@@ -100,12 +108,7 @@ class App extends Component {
 
   setValue = value => {
     if (value) {
-      window.history.pushState(
-        '',
-        '',
-        `${window.location.origin}?sid=${value.value}`
-      );
-      this.getDetails(value);
+      history.push(`/?sid=${value.value}`)
     }
   };
 

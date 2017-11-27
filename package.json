@@ -7,6 +7,8 @@
     "bootstrap": "^4.0.0-beta",
     "chart.js": "^2.7.1",
     "d3-scale": "^1.0.6",
+    "history": "^4.7.2",
+    "query-string": "^5.0.1",
     "rc-slider": "^8.4.0",
     "react": "^16.1.1",
     "react-bootstrap": "^0.31.5",
