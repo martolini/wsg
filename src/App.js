@@ -104,6 +104,7 @@ class App extends Component {
           title: show.Title,
           posterURL: show.Poster,
           seasons: show.totalSeasons,
+          rating: show.imdbRating
         },
         loading: false,
       });
@@ -173,13 +174,14 @@ class App extends Component {
             optionComponent={OptionComponent}
             valueComponent={ValueComponent}
             optionClassName="option-component"
+            clearable={false}
           />
         </div>
         <div className="range-wrapper-style">
           <Range
             min={0}
             max={10}
-            defaultValue={[5, 10]}
+            defaultValue={range}
             step={0.5}
             onChange={this.setRange}
             tipFormatter={value => `${value}`}

@@ -43,6 +43,10 @@ const ValueComponent = ({value}) => (
       <img alt="" src={value.posterURL}/>
     </div>
     <span>{value.title}</span>
+    <div  style={{float: 'right', paddingRight: 15}}>
+      <i className='fa fa-star' style={{color: '#f7c61f'}} aria-hidden='true' />
+      <span className=''> {value.rating}</span>
+    </div>
 	</div>
 )
 
