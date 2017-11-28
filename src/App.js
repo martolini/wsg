@@ -177,20 +177,24 @@ class App extends Component {
             clearable={false}
           />
         </div>
-        <div className="range-wrapper-style">
-          <Range
-            min={0}
-            max={10}
-            defaultValue={range}
-            step={0.5}
-            onChange={this.setRange}
-            tipFormatter={value => `${value}`}
-          />
-        </div>
-        <p>
-          Showing results with score between {range[0]} and {range[1]}.{' '}
-        </p>
-        {value && <p>Click on an episode to view details.</p>}
+        {value && 
+          <div>
+            <div className="range-wrapper-style">
+              <Range
+                min={0}
+                max={10}
+                defaultValue={range}
+                step={0.5}
+                onChange={this.setRange}
+                tipFormatter={value => `${value}`}
+              />
+            </div>
+            <p>
+              Showing results with score between {range[0]} and {range[1]}.{' '}
+            </p>
+            <p>Click on an episode to view details.</p>
+          </div>
+        }
         <div style={bubbleStyle} className="content">
           <BubbleChart
             selectedShowRatings={selectedShowRatings}
