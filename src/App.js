@@ -10,7 +10,6 @@ import Slider from 'rc-slider';
 import { ValueComponent, OptionComponent } from './MenuComponents';
 import BubbleChart from './BubbleChart';
 import EpisodeModal from './EpisodeModal';
-import MostPopularShows from './MostPopularShows';
 import queryString from 'query-string';
 import createHistory from 'history/createBrowserHistory';
 const history = createHistory()
@@ -28,8 +27,7 @@ class App extends Component {
       range: [5, 10],
       selectedShowRatings: undefined,
       loading: false,
-      selectedEpisode: {},
-      popularShows: []
+      selectedEpisode: {}
     };
   }
 
@@ -41,7 +39,6 @@ class App extends Component {
     } else {
       mixpanel.track('Entered start page');
     }
-    this.findMostPopularShows()
     
     history.listen((location, action) => {
       const query = queryString.parse(location.search)
@@ -49,15 +46,6 @@ class App extends Component {
         this.getDetails({value: query.sid});
       }
     })
-  }
-
-  findMostPopularShows = () => {
-    const showLimit = 3
-    return axios
-      .get(`${baseUrlApi}/popular?limit=${showLimit}`)
-      .then(response => {
-        this.setState({popularShows: response.data})
-      })
   }
 
   getOptions = input => {
@@ -151,7 +139,7 @@ class App extends Component {
 
   render() {
     const selectedShowRatings = this.showRatingsfilteredByRange();
-    const { modalOpen, range, value, loading, selectedEpisode, popularShows } = this.state;
+    const { modalOpen, range, value, loading, selectedEpisode } = this.state;
     let bubbleStyle = {}
     if (value) {
       const maxEpisode = selectedShowRatings.reduce((acc, curr) => curr.episode > acc ? curr.episode : acc, 0)
@@ -204,9 +192,6 @@ class App extends Component {
             didPressElementAtIndex={this.showModal}
           />
         </div>
-        { popularShows.length > 0 && 
-          <MostPopularShows popularShows={popularShows} setSelectedShow={this.setValue} />
-        }
         <footer className="footer">
           <p>
             Using the{' '}
