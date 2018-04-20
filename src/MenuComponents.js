@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import { Link } from 'react-router-dom'
 
 class OptionComponent extends Component {
 
@@ -19,20 +20,20 @@ class OptionComponent extends Component {
   }
 
   render() {
+    const { option, className } = this.props;
     return (
-      <div 
-        onMouseDown={this.handleMouseDown}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseMove={this.handleMouseMove}
-        className={this.props.className}
-      >
-        <div>
-        {this.props.option.posterURL !== 'N/A' &&
-          <img alt="" src={this.props.option.posterURL}/>
-        }
-        </div>
-        <span>{this.props.option.title}</span>
-      </div>
+        <Link to={{
+            pathname: `/${option.value}`,
+            state: { fromDashboard: true }
+          }}
+              className={className}>
+          <div>
+          {option.posterURL !== 'N/A' &&
+            <img alt="" src={option.posterURL}/>
+          }
+          </div>
+          <span>{option.title}</span>
+        </Link>
       )
   }
 }

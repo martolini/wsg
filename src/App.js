@@ -10,10 +10,7 @@ import Slider from 'rc-slider';
 import { ValueComponent, OptionComponent } from './MenuComponents';
 import BubbleChart from './BubbleChart';
 import EpisodeModal from './EpisodeModal';
-import MostPopularShows from './MostPopularShows';
-import queryString from 'query-string';
-import createHistory from 'history/createBrowserHistory';
-const history = createHistory()
+
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 
@@ -28,36 +25,26 @@ class App extends Component {
       range: [5, 10],
       selectedShowRatings: undefined,
       loading: false,
-      selectedEpisode: {},
-      popularShows: []
+      selectedEpisode: {}
     };
   }
 
   componentDidMount() {
-    const url = history.location
-    const queryParams = queryString.parse(url.search)
-    if (queryParams.sid) {
-      this.getDetails({ value: queryParams.sid });
-    } else {
-      mixpanel.track('Entered start page');
-    }
-    this.findMostPopularShows()
-    
-    history.listen((location, action) => {
-      const query = queryString.parse(location.search)
-      if (query.sid) {
-        this.getDetails({value: query.sid});
-      }
-    })
+    this.loadSeries(this.props);
   }
 
-  findMostPopularShows = () => {
-    const showLimit = 3
-    return axios
-      .get(`${baseUrlApi}/popular?limit=${showLimit}`)
-      .then(response => {
-        this.setState({popularShows: response.data})
-      })
+  componentWillReceiveProps(nextProps) {
+    this.loadSeries(nextProps)
+  }
+
+  loadSeries = (currentProps) => {
+    const { showid, episodeid } = currentProps.match.params;
+    if(showid !== undefined) {
+      this.getDetails({ value: showid });
+      if(episodeid !== undefined) {
+        this.showModal(episodeid);
+      } 
+    }
   }
 
   getOptions = input => {
@@ -89,7 +76,7 @@ class App extends Component {
     this.setState({ loading: true });
     axios.get(`${baseUrlApi}/get/${value}`).then(response => {
       if (response.data.Response === 'False') {
-        history.push('/')
+        // history.push('/')
         return;
       }
       const show = response.data
@@ -113,7 +100,7 @@ class App extends Component {
 
   setValue = value => {
     if (value) {
-      history.push(`/?sid=${value.value}`)
+      // history.push(`/?sid=${value.value}`)
     }
   };
 
@@ -121,15 +108,19 @@ class App extends Component {
     this.setState({ range: value });
   };
 
-  showModal = selectedIndex => {
-    this.setState({ modalOpen: true });
+  selectShow = selectedIndex => {
     const showRatings = this.showRatingsfilteredByRange();
     const imdbID = showRatings[selectedIndex].imdbID;
+    this.props.history.push(`/${this.props.match.params.showid}/${imdbID}`);
+  };
+
+  showModal = imdbID => {
+    this.setState({ modalOpen: true });
     this.setState({ loading: true });
     return axios.get(`${baseUrlApi}/get/${imdbID}`).then(response => {
       mixpanel.track('Clicked episode', {
         title: response.data.Title,
-        show: this.state.value.title
+        show: this.props.match.params.showid
       });
       this.setState({ selectedEpisode: response.data, loading: false });
     });
@@ -146,12 +137,15 @@ class App extends Component {
   };
 
   toggleModal = () => {
+    if (this.state.modalOpen) {
+      this.props.history.push(`/${this.props.match.params.showid}`);
+    }
     this.setState({ modalOpen: !this.state.modalOpen });
   };
 
   render() {
     const selectedShowRatings = this.showRatingsfilteredByRange();
-    const { modalOpen, range, value, loading, selectedEpisode, popularShows } = this.state;
+    const { modalOpen, range, value, loading, selectedEpisode } = this.state;
     let bubbleStyle = {}
     if (value) {
       const maxEpisode = selectedShowRatings.reduce((acc, curr) => curr.episode > acc ? curr.episode : acc, 0)
@@ -173,6 +167,7 @@ class App extends Component {
             loadOptions={this.getOptions}
             optionComponent={OptionComponent}
             valueComponent={ValueComponent}
+            closeOnSelect={true}
             optionClassName="option-component"
             clearable={false}
           />
@@ -201,12 +196,9 @@ class App extends Component {
             range={range}
             value={value}
             loading={loading}
-            didPressElementAtIndex={this.showModal}
+            didPressElementAtIndex={this.selectShow}
           />
         </div>
-        { popularShows.length > 0 && 
-          <MostPopularShows popularShows={popularShows} setSelectedShow={this.setValue} />
-        }
         <footer className="footer">
           <p>
             Using the{' '}
