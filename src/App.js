@@ -33,10 +33,6 @@ class App extends Component {
     this.loadSeries(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.loadSeries(nextProps);
-  }
-
   loadSeries = currentProps => {
     const { showid, episodeid } = currentProps.match.params;
     if (showid !== undefined) {
@@ -76,7 +72,6 @@ class App extends Component {
     this.setState({ loading: true });
     axios.get(`${baseUrlApi}/get/${value}`).then(response => {
       if (response.data.Response === 'False') {
-        // history.push('/')
         return;
       }
       const show = response.data;
@@ -112,11 +107,11 @@ class App extends Component {
     const showRatings = this.showRatingsfilteredByRange();
     const imdbID = showRatings[selectedIndex].imdbID;
     this.props.history.push(`/${this.props.match.params.showid}/${imdbID}`);
+    this.showModal(imdbID);
   };
 
   showModal = imdbID => {
-    this.setState({ modalOpen: true });
-    this.setState({ loading: true });
+    this.setState({ modalOpen: true, loading: true });
     return axios.get(`${baseUrlApi}/get/${imdbID}`).then(response => {
       mixpanel.track('Clicked episode', {
         title: response.data.Title,
