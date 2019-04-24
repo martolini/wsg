@@ -160,6 +160,7 @@ class App extends Component {
         <div className="select-field">
           <span className="small">Search any show:</span>
           <Select.Async
+            autoFocus
             placeholder="Select a show.."
             name="form-field-name"
             value={value}
